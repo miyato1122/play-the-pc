@@ -1,0 +1,27 @@
+appId: com.playthepc.pointer
+productName: ポインターであそぼう
+copyright: play-the-pc
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - package.json
+
+mac:
+  category: public.app-category.education
+  target:
+    - target: dmg
+      arch:
+        - arm64
+        - x64
+  # 個人利用の配布を想定しているため署名・公証は行わない
+  identity: null
+  extendInfo:
+    LSApplicationCategoryType: public.app-category.education
+    NSHighResolutionCapable: true
+
+dmg:
+  title: ポインターであそぼう

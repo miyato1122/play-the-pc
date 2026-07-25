@@ -6,7 +6,7 @@
  *  2. 幼児が触っても壊れない・抜け出せないように囲う
  */
 
-import { app, BrowserWindow, Menu, ipcMain, protocol, session } from 'electron';
+import { app, BrowserWindow, Menu, ipcMain, protocol, screen, session } from 'electron';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 
@@ -71,14 +71,20 @@ function hardenSession(): void {
 
 function createWindow(): void {
   const preloadPath = path.join(DIST_ROOT, 'main', 'preload.js');
-  const window = new BrowserWindow(createWindowOptions(preloadPath));
+  const { bounds } = screen.getPrimaryDisplay();
+  const window = new BrowserWindow(createWindowOptions(preloadPath, bounds));
   mainWindow = window;
 
-  window.setKiosk(true);
+  // 呼ぶ順番が大事。Space の設定を先に済ませてから全画面にする。
+  // 逆順（全画面 → Space 設定）だと macOS がウィンドウを全画面 Space から追い出し、
+  // 音だけ鳴って画面が見えない状態になる。
+  window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  // ネイティブ全画面ではなく従来方式の全画面。
+  // 新しい Space を作らずに、メニューバーと Dock を隠して画面全体を覆う。
+  window.setSimpleFullScreen(true);
   // 他のアプリより前に出すが、'screen-saver' ほど高くはしない。
   // 強制終了ダイアログ（Cmd+Option+Esc）まで覆ってしまうと、大人の逃げ道が無くなるため。
   window.setAlwaysOnTop(true, 'floating');
-  window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
   const contents = window.webContents;
 

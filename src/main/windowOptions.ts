@@ -5,12 +5,20 @@
  * 「閉じた箱」になるように組み立てる。
  */
 
-import type { BrowserWindowConstructorOptions } from 'electron';
+import type { BrowserWindowConstructorOptions, Rectangle } from 'electron';
 
-export function createWindowOptions(preloadPath: string): BrowserWindowConstructorOptions {
+export function createWindowOptions(
+  preloadPath: string,
+  bounds: Rectangle,
+): BrowserWindowConstructorOptions {
   return {
     show: false,
-    fullscreen: true,
+    ...bounds,
+    // macOS のネイティブ全画面（専用 Space を作る方式）は使わない。
+    // setVisibleOnAllWorkspaces / setAlwaysOnTop と両立せず、
+    // 起動直後にウィンドウが Space から追い出されて見えなくなるため。
+    fullscreen: false,
+    simpleFullscreen: true,
     // 全画面固定。タイトルバーもリサイズも与えない
     frame: false,
     resizable: false,
@@ -18,7 +26,7 @@ export function createWindowOptions(preloadPath: string): BrowserWindowConstruct
     minimizable: false,
     maximizable: false,
     closable: false,
-    fullscreenable: true,
+    fullscreenable: false,
     title: 'ポインターであそぼう',
     backgroundColor: '#14142a',
     hasShadow: false,

@@ -1,0 +1,34 @@
+{
+  "name": "play-the-pc",
+  "version": "1.0.0",
+  "description": "初めてPCに触れる子ども向けの、トラックパッド操作を楽しむMac専用デスクトップアプリ",
+  "main": "main.js",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dev": "PLAY_DEV=1 electron .",
+    "test": "node test/run-tests.mjs",
+    "dist": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.8",
+    "playwright-core": "^1.48.0"
+  },
+  "build": {
+    "appId": "com.create-sekai.play-the-pc",
+    "productName": "ポインターであそぼう",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.education",
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    }
+  }
+}

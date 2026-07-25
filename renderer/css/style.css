@@ -1,0 +1,97 @@
+/* 夜空のような背景の1枚シーン。マウスカーソルはcanvas側で星として描く */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: none;
+  background: radial-gradient(ellipse at 50% 120%, #24356b 0%, #131c42 45%, #0b1026 100%);
+  font-family: "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+#stage {
+  position: fixed;
+  inset: 0;
+  display: block;
+}
+
+/* ---- キーボードあそび: 押したキーが大きく現れて消える ---- */
+#glyphs {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glyph {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 20vmin;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 0 3vmin rgba(255, 255, 255, 0.55);
+  animation: glyph-pop 1.4s ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes glyph-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(-12deg);
+  }
+  18% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15) rotate(4deg);
+  }
+  30% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -62%) scale(1.05);
+  }
+}
+
+/* ---- 保護者向け: Esc長押し終了のカウントダウン ---- */
+#quit-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3vmin;
+  background: rgba(11, 16, 38, 0.72);
+  z-index: 10;
+}
+
+#quit-overlay[hidden] {
+  display: none;
+}
+
+#quit-ring {
+  width: 18vmin;
+  height: 18vmin;
+  border-radius: 50%;
+  /* --p は 0〜100 の進捗。JSから更新する */
+  background: conic-gradient(#ffd166 calc(var(--p, 0) * 1%), rgba(255, 255, 255, 0.15) 0);
+  -webkit-mask: radial-gradient(circle, transparent 55%, #000 56%);
+  mask: radial-gradient(circle, transparent 55%, #000 56%);
+}
+
+#quit-text {
+  color: #ffffff;
+  font-size: 4vmin;
+  letter-spacing: 0.1em;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ポインターであそぼう</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <!-- キーを叩いたときの大きな文字/絵文字がここに入る -->
+  <div id="glyphs" aria-hidden="true"></div>
+
+  <!-- 保護者向け: Esc長押しで終了するときのカウントダウン表示 -->
+  <div id="quit-overlay" hidden>
+    <div id="quit-ring"></div>
+    <p id="quit-text">おしまいにする…</p>
+  </div>
+
+  <script src="js/audio.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/bubbles.js"></script>
+  <script src="js/keys.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
